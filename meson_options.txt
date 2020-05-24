@@ -1,5 +1,5 @@
 option('auto_build_examples',
   type : 'boolean',
-  value : false,
+  value : true,
   description : 'Specifies if examples should be also build with project library.'
 )

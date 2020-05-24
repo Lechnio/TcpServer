@@ -1,8 +1,7 @@
 pingPong_sources = files('pingPong.cpp')
 
-executable('examples/pingPong',
+executable('pingPong',
   pingPong_sources,
-  dependencies : [libTcpServer_dep],
-  include_directories : source_includes,
+  dependencies : libTcpServer_dep,
   cpp_args : libTcpServer_cpp_args
 )
