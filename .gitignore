@@ -1,2 +1,5 @@
-*.o
-*.so
+# Exclude build directory
+build/
+
+# KDevelop files
+*kdev*
