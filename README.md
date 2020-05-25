@@ -23,12 +23,12 @@ $ git clone https://github.com/Lechnio/LinuxEasyManager.git
 ```
 Enter to the TcpServer directory and run
 ```
-$ meson [build_directory_name]
-```
-Since build directory has been prepared, you can generate the executable with
-```
-$ ninja -C [build_directory_name]
+$ make
 ```
 
-
-
+## Configuring build type
+Meson allows configuring a current build via its built-in options.
+Those options can be extended with `meson_options.txt` file, but they can not be changed
+form the inside of the `meson.build`. Therefore `Makefile` was created.
+Since that `Makefile` exists, all possible targets can be list with `make [double TAB press]`.
+All targets whose name starts with `conf_` can be used to reconfigure your build directory.
