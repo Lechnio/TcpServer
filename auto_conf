@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Setup variables here to auto configure them.
-# Set option to '0' due to disable or '1' to enable.
-# If the specified variable is not set, user would be prompted for the choice.
-readonly auto_build_examples="1"

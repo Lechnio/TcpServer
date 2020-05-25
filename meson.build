@@ -3,7 +3,7 @@ project('libTcpServer', 'cpp',
   license : ['"MIT"'],
   meson_version : '>= 0.54.1',
   subproject_dir : 'third_party', # reference manual says it is only capability mode and should not be used, but who cares
-  default_options : [ 'warning_level=2', 'buildtype=debugoptimized', 'cpp_std=c++14' ]
+  default_options : [ 'warning_level=2', 'buildtype=release', 'cpp_std=c++14' ]
 )
 
 # Just metion used variables even if they are not used
