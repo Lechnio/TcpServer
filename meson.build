@@ -2,6 +2,7 @@ project('libTcpServer', 'cpp',
   version : run_command('cat', 'VERSION').stdout().strip(),
   license : ['"MIT"'],
   meson_version : '>= 0.54.1',
+  subproject_dir : 'third_party', # reference manual says it is only capability mode and should not be used, but who cares
   default_options : [ 'warning_level=3', 'buildtype=debugoptimized', 'cpp_std=c++14' ]
 )
 
@@ -25,6 +26,10 @@ info_conf.set_quoted('PROJECT_VERSION', meson.project_version(),
 
 configure_file(output : 'project_info.h', configuration : info_conf)
 libTcpServer_inc += [include_directories('.')]
+
+# Point subprojects
+gtest = subproject('gtest')
+benchmark = subproject('benchmark')
 
 # Point sub meson recipies
 subdir('src')
