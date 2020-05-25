@@ -4,16 +4,20 @@
 # this require to configure them before. It is also possible to change them
 # with default_options but in that case 'wipe refresh' for the build directory is required.
 
+source auto_conf
+
 readonly build_dir="build"
 declare conf_list
+
+#
+# Build types
+#
 
 function do_configure_debug()
 {
     conf_list=(
         "-Dbuildtype=debugoptimized"
     )
-
-    check_examples_build
 }
 
 function do_configure_release()
@@ -22,21 +26,33 @@ function do_configure_release()
         "-Dbuildtype=release"
         "-Doptimization=3"
     )
-
-    check_examples_build
 }
+
+#
+# Utils
+#
 
 function check_examples_build()
 {
+    local val="false"
+
+    if [ -n "$auto_build_examples" ]; then
+        [ "$auto_build_examples" == "1" ] && val="true"
+    else
+        get_user_choice && val="true"
+    fi
+
+    conf_list+=" -Dauto_build_examples=${val}"
+}
+
+function get_user_choice()
+{
+    local opt
+
     echo "Should be examples build also? [y/n]"
     read opt
 
-    if [[ ${opt} =~ ^[y|Y]$ ]];
-    then
-        conf_list+=" -Dauto_build_examples=true"
-    else
-        conf_list+=" -Dauto_build_examples=false"
-    fi
+    [[ ${opt} =~ ^[y|Y]$ ]] && return 0 || return 1
 }
 
 function main()
@@ -53,6 +69,9 @@ function main()
             exit 1
             ;;
     esac
+
+    # opts
+    check_examples_build
 
     meson configure ${conf_list[@]} ${build_dir}
     echo -e "Overrided options:\n${conf_list[@]}"
