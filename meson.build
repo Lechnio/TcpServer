@@ -3,7 +3,7 @@ project('libTcpServer', 'cpp',
   license : ['"MIT"'],
   meson_version : '>= 0.54.1',
   subproject_dir : 'third_party', # reference manual says it is only capability mode and should not be used, but who cares
-  default_options : [ 'warning_level=3', 'buildtype=debugoptimized', 'cpp_std=c++14' ]
+  default_options : [ 'warning_level=2', 'buildtype=debugoptimized', 'cpp_std=c++14' ]
 )
 
 # Just metion used variables even if they are not used
@@ -12,6 +12,7 @@ libTcpServer_headers = []
 libTcpServer_libs = []
 libTcpServer_cpp_args = []
 libTcpServer_inc = [include_directories('')]
+libTcpServer_deps = []
 
 # Configure project info header
 info_conf = configuration_data({
@@ -34,17 +35,13 @@ benchmark = subproject('benchmark')
 # Point sub meson recipies
 subdir('src')
 
-tcpServer_deps = [
-  meson.get_compiler('cpp').find_library('pthread', required: true)
-]
-
 if get_option('buildtype').startswith('debug')
   libTcpServer_cpp_args += ['-DDEBUG']
 endif
 
 libTcpServer = shared_library('tcpServer',
   libTcpServer_sources,
-  dependencies : [],
+  dependencies : [libTcpServer_deps],
   include_directories : libTcpServer_inc,
   cpp_args : libTcpServer_cpp_args
 )
