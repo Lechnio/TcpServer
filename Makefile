@@ -7,12 +7,24 @@ BUILD_DIR		:= ./build
 DEBUG_OPTS		:= -Dbuildtype=debugoptimized
 RELEASE_OPTS	:= -Dbuildtype=release -Doptimization=3
 
-.PHONY: test clean build conf_debug conf_release
+TARGET_TESTS	:= test_unit test_benchmark
+TARGET_CONF		:= conf_debug conf_release
+
+# Construct valgrind tests
+TARGET_TESTS_V	= $(TARGET_TESTS:=_valgrind)
+
+.PHONY: build clean test test_valgrind $(TARGET_TESTS) $(TARGET_TESTS_V) $(TARGET_CONF)
 default: build
 
 build:
 	@[ -d $(BUILD_DIR) ] || meson $(BUILD_DIR)
 	@ninja -C $(BUILD_DIR)
+
+	@make show | grep -qE auto_unit_tests[[:space:]]*true && make test_unit || return 0
+
+#
+# CONFIGURE
+#
 
 conf_debug:
 	@meson configure $(BUILD_DIR) $(DEBUG_OPTS)
@@ -22,8 +34,35 @@ conf_release:
 	@meson configure $(BUILD_DIR) $(RELEASE_OPTS)
 	@echo "Configured release build:\n$(RELEASE_OPTS)"
 
+#
+# TESTS
+#
+
 test:
+	@meson test -C $(BUILD_DIR)
+
+test_valgrind:
+	@meson test -C $(BUILD_DIR) --wrap='valgrind --tool=helgrind'
+
+test_unit:
+	@meson test -C $(BUILD_DIR) 'Unit tests'
+
+test_unit_valgrind:
+	@meson test -C $(BUILD_DIR) --wrap='valgrind --tool=helgrind' 'Unit tests'
+	
+test_benchmark:
+	@meson test -C $(BUILD_DIR) 'Unit tests'
+
+test_benchmark_valgrind:
+	@meson test -C $(BUILD_DIR) --wrap='valgrind --tool=helgrind' 'Benchmark tests'
+
+#
+# OTHER
+#
+
+show:
 	@echo "BUILD_DIR=$(BUILD_DIR)"
+	meson configure $(BUILD_DIR)
 
 clean:
-	rm -rf $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR) && echo "Build directory removed: '$(BUILD_DIR)'"

@@ -52,8 +52,13 @@ libTcpServer_dep = declare_dependency(
   link_with : libTcpServer
 )
 
-# Build examples after
-if get_option('auto_build_examples')
-  message('Auto build examples option selected.')
+# Build after library
+if get_option('build_examples')
+  message('Building examples...')
   subdir('examples')
+endif
+
+if get_option('build_tests')
+  message('Building tests...')
+  subdir('tests')
 endif

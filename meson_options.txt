@@ -1,5 +1,17 @@
-option('auto_build_examples',
+option('build_examples',
   type : 'boolean',
   value : true,
-  description : 'Specifies if examples should be also build with project library.'
+  description : 'Build examples automatically with main target.'
+)
+
+option('build_tests',
+  type : 'boolean',
+  value : true,
+  description : 'Build tests automatically with main target.'
+)
+
+option('auto_unit_tests',
+  type : 'boolean',
+  value : true,
+  description : 'Run google unit tests after each build.'
 )
