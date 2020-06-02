@@ -13,7 +13,7 @@ TARGET_CONF		:= conf_debug conf_release
 # Construct valgrind tests
 TARGET_TESTS_V	= $(TARGET_TESTS:=_valgrind)
 
-.PHONY: build clean test test_valgrind $(TARGET_TESTS) $(TARGET_TESTS_V) $(TARGET_CONF)
+.PHONY: build clean test test_valgrind vim_prepare $(TARGET_TESTS) $(TARGET_TESTS_V) $(TARGET_CONF)
 default: build
 
 build:
@@ -59,6 +59,20 @@ test_benchmark_valgrind:
 #
 # OTHER
 #
+
+vim_prepare:
+	@# Configure for YouCompleteMe
+	@# Since YCM is damn great, there is an option to use pregenerated
+	@# config for the project (instead using .ycm_extra_conf.py)
+	@# Ninja can list your setup for build and YCM is possible to parse it.
+	@# NOTE: It reuires YCM installed for the vim, you can use
+	@# https://github.com/Lechnio/LinuxEasyManager to do it for you.
+	
+	@# dummy check
+	@[ -d ~/.vim/bundle/YouCompleteMe ] || (echo "Error: YouCompleteMe is not installed." && return 1)
+	
+	@# Fixed 'compile_commands.json' name is required by YCM.
+	@ninja -C $(BUILD_DIR) -t compdb > $(BUILD_DIR)/compile_commands.json
 
 show:
 	@echo "BUILD_DIR=$(BUILD_DIR)"

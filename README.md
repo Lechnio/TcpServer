@@ -20,7 +20,8 @@ Optional:
  [gcc]: https://gcc.gnu.org/ "GNU gcc"
  [valgrind]: http://valgrind.org/downloads/?src=www.discoversdk.com "Valgrind download"
 
-## Build
+## Getting Started
+### Build
 Clone the repository with
 ```
 $ git clone https://github.com/Lechnio/LinuxEasyManager.git
@@ -30,7 +31,7 @@ Enter to the TcpServer directory and run
 $ make
 ```
 
-### Build files tree
+#### Build files tree
 After the build has been passed, output tree is generated in the build directory:
 ```
 build                           # Build directory
@@ -46,6 +47,23 @@ build                           # Build directory
     └── unit
         └── unitTests           # Executable unit tests
 ```
+
+### IDE integration
+ [ycm]: https://github.com/ycm-core/YouCompleteMe "YouCompleteMe plugin for VIM"
+ [easy-manager]: https://github.com/Lechnio/LinuxEasyManager "Linux Easy Manager"
+
+Since ninja backend is fully supported by the [YouCompleteMe (YCM)][ycm] VIM's plugin,
+that is what I use by myself durring development.
+If you are wondering how to use VIM to development, guide below is for you.
+1. Install YCM plugin for your VIM editor.
+You can easily do this by following the instructions from YCM's README, or you can get my own VIM setup (not only YCM)
+from the other repository (see [LinuxEasyManager][easy-manager]).
+2. After build directory was created with `make` there should be nothing more to do.
+YCM will read `compile_commands.json` file in order to synchronize with compile options.<br />
+NOTE: In case that ninja wont generate this file automatically `make vim_prepare` could be used as fallback.
+
+Meson build system is also fully supported by KDevelop, just open main project directory into it.
+That is probably not only one IDE supporting it, but the one I have used for a while.
 
 ## Configuring build type
 Meson allows configuring a current build via its built-in options.
